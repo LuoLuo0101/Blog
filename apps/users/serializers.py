@@ -1,7 +1,6 @@
 # coding:utf-8
 __author__ = 'Luo'
 
-from datetime import datetime, timedelta
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth import get_user_model
@@ -22,6 +21,16 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         )]
     )
 
+    email = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        label="邮箱",
+        validators=[UniqueValidator(
+            queryset=User.objects.all(),
+            message="邮箱已存在"
+        )]
+    )
+
     password = serializers.CharField(
         style={"input_type": "password"},
         label="密码",
@@ -37,4 +46,4 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "code", "mobile", "password")
+        fields = ("username", "email", "password")

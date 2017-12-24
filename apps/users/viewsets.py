@@ -1,21 +1,21 @@
 # coding:utf-8
+__author__ = 'Luo'
 from rest_framework import status, viewsets
 from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
 
 from users.serializers import UserRegisterSerializer
 
-__author__ = 'Luo'
 from django.contrib.auth import get_user_model
-
 
 # 导入 jwt 中的 payload
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
 
 User = get_user_model()
 
+
 class UserRegisterViewSet(CreateModelMixin, viewsets.GenericViewSet):
-    '''用户'''
+    '''用户注册'''
     serializer_class = UserRegisterSerializer
     queryset = User.objects.all()
 
@@ -29,13 +29,12 @@ class UserRegisterViewSet(CreateModelMixin, viewsets.GenericViewSet):
         # 生成payload
         payload = jwt_payload_handler(user)
 
-        # Token.objects.create(user=instance)：很奇怪为什么不这样生成，解决，因为这个Token是原生Token，我们需要的是JWT Token
-        # 生成Token
+        # 生成 JWT
         re_dict = serializer.data
         re_dict["token"] = jwt_encode_handler(payload)
-        # re_dict["name"] = user.name if user.name else user.username # 因为在Serializer中有，这里注销掉
 
         headers = self.get_success_headers(serializer.data)
+
         return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):

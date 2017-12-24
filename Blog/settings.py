@@ -10,6 +10,8 @@ conf_path = os.path.join(BASE_DIR, "Blog")
 
 conf.read(os.path.join(conf_path, "config.ini"), encoding="utf-8")
 
+sys.path.insert(0, BASE_DIR)
+
 sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 
 SECRET_KEY = 's+sa+8qr*yqptsl#^qzc#kf^!q)h25w+leeaev0wvoqlk38lr8'
@@ -27,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',  # 用户模块
     'operation.apps.OperationConfig',  # 操作模块
+    'blogger.apps.BloggerConfig',   # 博客模块
     'crispy_forms',  # from 表单验证
     'rest_framework',  # Restful框架
     'corsheaders',  # 解决跨域访问问题

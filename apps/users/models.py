@@ -32,6 +32,7 @@ class UserProfile(AbstractUser):
 
     class Meta:
         verbose_name = verbose_name_plural = "用户信息"
+        db_table="userprofile"  # 重命名数据表名
 
     def __str__(self):
         return self.username
