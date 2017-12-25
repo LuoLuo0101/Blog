@@ -17,7 +17,7 @@ class UserFavLRSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserFav
-        fields = ("id", "article", "add_time")
+        fields = ("id", "article", "create_time")
 
 
 class UserFavCUDSerializer(serializers.ModelSerializer):
@@ -48,7 +48,7 @@ class UserFocusLRSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserFocus
-        fields = ("id", "to_user", "add_time")
+        fields = ("id", "to_user", "create_time")
 
 
 class UserFocusCUDSerializer(serializers.ModelSerializer):
@@ -79,7 +79,7 @@ class UserLeavingMessageLRSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserLeavingMessage
-        fields = ("id", "to_user", "message", "add_time")
+        fields = ("id", "to_user", "message", "create_time")
 
 
 class UserLeavingMessageCUDSerializer(serializers.ModelSerializer):
@@ -107,11 +107,11 @@ class UserCommentLRSerializer(serializers.ModelSerializer):
     retrieve:
         单个
     """
-    article = ArticleLRSerializer(many=False)
+    # article = ArticleLRSerializer(many=False)
 
     class Meta:
         model = UserComment
-        fields = ("id", "user", "article", "comment", "add_time")
+        fields = ("id", "user", "article", "comment", "create_time")
 
 
 class UserCommentCUDSerializer(serializers.ModelSerializer):

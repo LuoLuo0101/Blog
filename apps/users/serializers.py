@@ -3,9 +3,8 @@ __author__ = 'Luo'
 
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-from django.contrib.auth import get_user_model
+from users.models import UserProfile
 
-User = get_user_model()
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -16,7 +15,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         allow_blank=False,
         label="用户名",
         validators=[UniqueValidator(
-            queryset=User.objects.all(),
+            queryset=UserProfile.objects.all(),
             message="用户已存在"
         )]
     )
@@ -26,7 +25,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         allow_blank=False,
         label="邮箱",
         validators=[UniqueValidator(
-            queryset=User.objects.all(),
+            queryset=UserProfile.objects.all(),
             message="邮箱已存在"
         )]
     )
@@ -45,5 +44,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return user
 
     class Meta:
-        model = User
+        model = UserProfile
         fields = ("username", "email", "password")
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = ("nick_name", "username", "birthday", "gender", "desc", "focus", "refocus", "integral", "image")

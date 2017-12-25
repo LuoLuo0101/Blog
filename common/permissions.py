@@ -6,7 +6,7 @@ from rest_framework import permissions
 
 class IsOwnerOrReadOnly(permissions.BasePermission):
     """
-    是否是当前用户
+    不是作者只能查看
     """
 
     def has_object_permission(self, request, view, obj):

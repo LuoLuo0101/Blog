@@ -1,5 +1,6 @@
 # coding:utf-8
 __author__ = 'Luo'
+
 from blogger.models import Category, Tag, Article
 from rest_framework import serializers
 
