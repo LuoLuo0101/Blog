@@ -41,6 +41,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 # 设置默认用户 Model
 AUTH_USER_MODEL = 'users.UserProfile'
 
+
+# 中间件相关配置
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # 设置跨域问题的解决
     'django.middleware.security.SecurityMiddleware',
@@ -54,6 +56,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Blog.urls'
 
+# 模板相关配置
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -70,8 +73,12 @@ TEMPLATES = [
     },
 ]
 
+
+# 配置网关接口
 WSGI_APPLICATION = 'Blog.wsgi.application'
 
+
+# 数据库相关配置
 mysql_conf = conf["mysql"]
 
 DATABASES = {
@@ -100,6 +107,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# 时区以及编码
 LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
@@ -110,23 +119,34 @@ USE_L10N = True
 
 USE_TZ = False
 
+
+# 静态文件配置
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+
+# REST_FRAMEWORK的配置
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         # 文档用的是Session验证的
         'rest_framework.authentication.SessionAuthentication',
-        # JWT Token
+        # JWT
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     )
 }
+
 
 # 设置自定义的登录
 AUTHENTICATION_BACKENDS = (
     'users.backend.CustomBackend',
 )
 
+
+# JWT的配置
 import datetime
 
 JWT_AUTH = {

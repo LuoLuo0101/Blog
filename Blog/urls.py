@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import TemplateView
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 from rest_framework_jwt.views import obtain_jwt_token
@@ -24,6 +25,10 @@ urlpatterns = [
     url(r'^docs/', include_docs_urls(title='博客系统')),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
     # 登录
     url(r'^login/', obtain_jwt_token),
+
+    # 主页
+    url(r"^index/$", TemplateView.as_view(template_name="index.html"), name="index")
 ]
