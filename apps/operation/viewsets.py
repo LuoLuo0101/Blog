@@ -1,6 +1,9 @@
 # coding:utf-8
 __author__ = 'Luo'
 
+from rest_framework.filters import OrderingFilter
+from common.paginations import StandardPagination
+from django_filters.rest_framework import DjangoFilterBackend
 from operation.models import UserFav, UserFocus, UserLeavingMessage, UserComment
 from operation.serializers import UserFavLRSerializer, UserFavCUDSerializer, UserFocusLRSerializer, \
     UserFocusCUDSerializer, UserLeavingMessageCUDSerializer, UserLeavingMessageLRSerializer, UserCommentLRSerializer, \
@@ -16,7 +19,31 @@ class UserFavViewSet(viewsets.ModelViewSet):
 
     queryset = UserFav.objects.all()
 
+    pagination_class = StandardPagination
+
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+
+    def perform_create(self, serializer):
+        """
+        当这条收藏记录被创建时,将文章收藏数也加一
+        :param serializer: 序列化对象
+        :return: 
+        """
+        userfav = serializer.save()
+        article = userfav.article
+        article.star_num += 1
+        article.save()
+
+    def perform_destroy(self, instance):
+        """
+        当这条收藏记录被删除时,将文章收藏数也减一
+        :param instance: 用户收藏
+        :return: 
+        """
+        article = instance.article
+        article.star_num -= 1
+        article.save()
+        instance.delete()
 
     def get_serializer_class(self):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
@@ -41,7 +68,37 @@ class UserFocusViewSet(viewsets.ModelViewSet):
 
     queryset = UserFocus.objects.all()
 
+    pagination_class = StandardPagination
+
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+
+    def perform_create(self, serializer):
+        """
+        当这条关注记录被创建时,用户关注数加一,对方被关注数加一
+        :param serializer: 序列化对象
+        :return: 
+        """
+        userfocus = serializer.save()
+        from_user = userfocus.from_user
+        to_user = userfocus.to_user
+        from_user.focus += 1  # 关注人的关注数加一
+        to_user.refocus += 1  # 被关注人的被关注数加一
+        from_user.save()
+        to_user.save()
+
+    def perform_destroy(self, instance):
+        """
+        当这条关注记录被删除时,用户关注数减一,对方被关注数减一
+        :param instance: 用户收藏
+        :return: 
+        """
+        from_user = instance.from_user
+        to_user = instance.to_user
+        from_user.focus -= 1  # 关注人的关注数加一
+        to_user.refocus -= 1  # 被关注人的被关注数加一
+        from_user.save()
+        to_user.save()
+        instance.delete()
 
     def get_serializer_class(self):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
@@ -65,6 +122,14 @@ class UserLeavingMessageViewSet(viewsets.ModelViewSet):
     '''用户留言'''
 
     queryset = UserLeavingMessage.objects.all()
+
+    pagination_class = StandardPagination
+
+    # 设置排序
+    filter_backends = (OrderingFilter,)
+
+    # 排序
+    ordering_fields = ('-create_time',)
 
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
 
@@ -91,7 +156,29 @@ class UserCommentViewSet(viewsets.ModelViewSet):
 
     queryset = UserComment.objects.all()
 
+    pagination_class = StandardPagination
+
+    # 设置排序,过滤的类
+    filter_backends = (OrderingFilter,DjangoFilterBackend)
+
+    # 排序
+    ordering_fields = ('create_time',)
+
+    # 设置过滤字段
+    filter_fields = ('article_id', )
+
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+
+    def perform_create(self, serializer):
+        """
+        当这条收藏记录被创建时,将文章收藏数也加一
+        :param serializer: 序列化对象
+        :return: 
+        """
+        usercomment = serializer.save()
+        user = usercomment.article.user
+        user.integral += 5
+        user.save()
 
     def get_serializer_class(self):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":

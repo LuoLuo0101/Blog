@@ -29,10 +29,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users.apps.UsersConfig',  # 用户模块
     'operation.apps.OperationConfig',  # 操作模块
-    'blogger.apps.BloggerConfig',   # 博客模块
+    'blogger.apps.BloggerConfig',  # 博客模块
     'crispy_forms',  # from 表单验证
     'rest_framework',  # Restful框架
     'corsheaders',  # 解决跨域访问问题
+    'django_filters',   # 过滤功能
 ]
 
 # 解决跨域访问问题

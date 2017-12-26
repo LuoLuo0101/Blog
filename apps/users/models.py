@@ -20,6 +20,10 @@ class UserProfile(AbstractUser):
 
     mobile = models.CharField(max_length=11, null=True, blank=True, verbose_name="电话")
 
+    focus = models.IntegerField(default=0, verbose_name="关注人数")
+
+    refocus = models.IntegerField(default=0, verbose_name="被关注人数")
+
     integral = models.IntegerField(default=0, verbose_name="积分")
 
     # 设置默认头像和上传头像的路径
@@ -32,7 +36,7 @@ class UserProfile(AbstractUser):
 
     class Meta:
         verbose_name = verbose_name_plural = "用户信息"
-        db_table="userprofile"  # 重命名数据表名
+        db_table = "userprofile"  # 重命名数据表名
 
     def __str__(self):
         return self.username

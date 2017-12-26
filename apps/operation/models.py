@@ -12,7 +12,7 @@ class UserFav(models.Model):
 
     article = models.ForeignKey(Article, related_name="article_fav", verbose_name="文章")
 
-    add_time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
 
     class Meta:
         verbose_name_plural = verbose_name = '用户收藏'
@@ -30,7 +30,7 @@ class UserFocus(models.Model):
 
     to_user = models.ForeignKey(UserProfile, related_name="to_focus", verbose_name="被关注人")
 
-    add_time = models.DateTimeField(auto_now_add=True, verbose_name="关注时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="关注时间")
 
     class Meta:
         verbose_name_plural = verbose_name = '用户关注'
@@ -50,7 +50,7 @@ class UserLeavingMessage(models.Model):
 
     message = models.CharField(max_length=100, verbose_name="留言")
 
-    add_time = models.DateTimeField(auto_now_add=True, verbose_name="留言时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="留言时间")
 
     class Meta:
         verbose_name_plural = verbose_name = "用户留言"
@@ -69,7 +69,7 @@ class UserComment(models.Model):
 
     comment = models.CharField(max_length=100, verbose_name="评论")
 
-    add_time = models.DateTimeField(auto_now_add=True, verbose_name="评论时间")
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="评论时间")
 
     class Meta:
         verbose_name_plural = verbose_name = '用户评论'

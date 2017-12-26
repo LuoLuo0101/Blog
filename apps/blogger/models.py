@@ -8,9 +8,9 @@ class Category(models.Model):
 
     user = models.ForeignKey(to=UserProfile, related_name="user_category", verbose_name="创建人")
 
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-
     update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = verbose_name_plural = "分类表"
@@ -27,9 +27,9 @@ class Tag(models.Model):
 
     user = models.ForeignKey(to=UserProfile, related_name="user_tags", verbose_name="创建人")
 
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-
     update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = verbose_name_plural = "标签表"
@@ -56,9 +56,9 @@ class Article(models.Model):
 
     star_num = models.IntegerField(default=0, verbose_name="收藏数")
 
-    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-
     update_time = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
 
     class Meta:
         verbose_name = verbose_name_plural = "文章表"

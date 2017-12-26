@@ -7,10 +7,11 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from blogger.viewsets import TagViewSet, CategoryViewSet, ArticleViewSet
 from operation.viewsets import UserFavViewSet, UserFocusViewSet, UserLeavingMessageViewSet, UserCommentViewSet
-from users.viewsets import UserRegisterViewSet
+from users.viewsets import UserRegisterViewSet, UserViewSet
 
 router = DefaultRouter()
 router.register(prefix="register", viewset=UserRegisterViewSet, base_name="register")
+router.register(prefix="userdetail", viewset=UserViewSet, base_name="userdetail")
 router.register(prefix="tag", viewset=TagViewSet, base_name="tag")
 router.register(prefix="category", viewset=CategoryViewSet, base_name="category")
 router.register(prefix="article", viewset=ArticleViewSet, base_name="article")
