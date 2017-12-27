@@ -1,4 +1,6 @@
 # coding:utf-8
+from django.db.models import Q
+
 __author__ = 'Luo'
 
 from rest_framework.filters import OrderingFilter
@@ -121,8 +123,6 @@ class UserFocusViewSet(viewsets.ModelViewSet):
 class UserLeavingMessageViewSet(viewsets.ModelViewSet):
     '''用户留言'''
 
-    queryset = UserLeavingMessage.objects.all()
-
     pagination_class = StandardPagination
 
     # 设置排序
@@ -132,6 +132,11 @@ class UserLeavingMessageViewSet(viewsets.ModelViewSet):
     ordering_fields = ('-create_time',)
 
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+
+    def get_queryset(self):
+        '''这个方法是为了让当前用户只能查看自己的留言'''
+        queryset = UserLeavingMessage.objects.filter(Q(from_user=self.request.user) | Q(to_user=self.request.user))
+        return queryset
 
     def get_serializer_class(self):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
@@ -159,13 +164,13 @@ class UserCommentViewSet(viewsets.ModelViewSet):
     pagination_class = StandardPagination
 
     # 设置排序,过滤的类
-    filter_backends = (OrderingFilter,DjangoFilterBackend)
+    filter_backends = (OrderingFilter, DjangoFilterBackend)
 
     # 排序
     ordering_fields = ('create_time',)
 
     # 设置过滤字段
-    filter_fields = ('article_id', )
+    filter_fields = ('article_id',)
 
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
 

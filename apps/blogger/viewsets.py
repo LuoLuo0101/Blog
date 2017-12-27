@@ -1,4 +1,6 @@
 # coding:utf-8
+from django_filters.rest_framework import DjangoFilterBackend
+
 __author__ = 'Luo'
 from common.paginations import StandardPagination
 from rest_framework.filters import OrderingFilter
@@ -20,6 +22,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
 
+
+    # 设置排序,过滤的类
+    filter_backends = (OrderingFilter, DjangoFilterBackend)
+
+    # 排序
+    ordering_fields = ('create_time',)
+
+    # 设置过滤字段
+    filter_fields = ('user_id',)
+
     def get_serializer_class(self):
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
             return CategoryCUDSerializer
@@ -33,9 +45,10 @@ class CategoryViewSet(viewsets.ModelViewSet):
         '''
         if self.action == "create" or self.action == "update" or self.action == "partial_update" or self.action == "destroy":
             # 必须返回一个用户的实例
-            return [permissions.IsAuthenticated(), IsOwnerOrReadOnly()]
+            return [permissions.IsAuthenticated()]
         else:
-            return []
+            return [IsOwnerOrReadOnly()]
+
 
 
 class TagViewSet(viewsets.ModelViewSet):
