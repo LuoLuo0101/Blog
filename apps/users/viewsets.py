@@ -13,7 +13,6 @@ from users.serializers import UserRegisterSerializer, UserSerializer
 from rest_framework_jwt.serializers import jwt_encode_handler, jwt_payload_handler
 
 
-
 class UserRegisterViewSet(CreateModelMixin, viewsets.GenericViewSet):
     '''用户注册'''
     serializer_class = UserRegisterSerializer
@@ -40,6 +39,7 @@ class UserRegisterViewSet(CreateModelMixin, viewsets.GenericViewSet):
     def perform_create(self, serializer):
         '''重写这个方法是为了返回User对象'''
         return serializer.save()
+
 
 class UserViewSet(RetrieveModelMixin, viewsets.GenericViewSet):
     '''用户详情'''
